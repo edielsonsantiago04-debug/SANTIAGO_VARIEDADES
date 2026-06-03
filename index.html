@@ -279,9 +279,14 @@ async function fetchConfig() {
 }
 
 async function pushConfig(data) {
-  const res = await api('config?id=eq.1', {
+  const res = await fetch(`${SUPA_URL}/rest/v1/config?id=eq.1`, {
     method: 'PATCH',
-    headers: { 'Prefer': 'return=representation' },
+    headers: {
+      'apikey': SUPA_KEY,
+      'Authorization': `Bearer ${SUPA_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    },
     body: JSON.stringify(data)
   });
   if (!res.ok) throw new Error(await res.text());
@@ -573,6 +578,5 @@ function copyUrl() {
   renderShop();
 })();
 </script>
-  
 </body>
 </html>
