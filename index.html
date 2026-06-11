@@ -301,8 +301,10 @@ async function deleteProductDB(id) {
 
 function showView(v) {
   ['shop','cart','admin'].forEach(x => {
-    document.getElementById('view-'+x).classList.toggle('hidden', x !== v);
-    document.getElementById('btn-'+x).classList.toggle('active', x === v);
+    const view = document.getElementById('view-'+x);
+    const btn = document.getElementById('btn-'+x);
+    if (view) view.classList.toggle('hidden', x !== v);
+    if (btn) btn.classList.toggle('active', x === v);
   });
   if (v === 'shop')  renderShop();
   if (v === 'cart')  renderCart();
@@ -310,7 +312,11 @@ function showView(v) {
 }
 
 function openAdmin() {
-  if (!cfg.password || adminUnlocked) { adminUnlocked = true; showView('admin'); return; }
+  if (!cfg.password || cfg.password === '' || adminUnlocked) {
+    adminUnlocked = true;
+    showView('admin');
+    return;
+  }
   document.getElementById('admin-modal').classList.remove('hidden');
   document.getElementById('admin-pass-input').value = '';
   document.getElementById('pass-error').textContent = '';
